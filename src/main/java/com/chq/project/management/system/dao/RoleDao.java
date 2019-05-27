@@ -55,6 +55,14 @@ public interface RoleDao {
      */
     RoleModel getById(Integer id);
 
+    /**
+     * 根据用户名查询用户角色信息
+     *
+     * @param username
+     * @return
+     */
+    List<RoleModel> selectRoleByUsername(@Param(value = "username") String username);
+
 
     /**
      * 保存角色权限信息

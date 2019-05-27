@@ -104,6 +104,21 @@ public class Response<T> implements Serializable {
         return resp;
     }
 
+    /**
+     * 请求失败
+     *
+     * @param msg
+     * @param <T>
+     * @return
+     */
+    public static <T> Response<T> fail(String msg) {
+        Response<T> resp = new Response<>();
+        resp.setSuccess(false);
+        resp.setMsg(msg);
+        resp.setCode(500);
+        return resp;
+    }
+
     public Integer getCode() {
         return code;
     }

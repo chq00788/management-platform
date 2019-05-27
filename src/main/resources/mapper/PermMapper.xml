@@ -17,17 +17,17 @@
     </sql>
 
     <resultMap id="baseResultMap" type="com.chq.project.management.system.model.PermModel">
-            <id property="id" column="id"/>
-            <result property="permName" column="perm_name"/>
-            <result property="permCode" column="perm_code"/>
-            <result property="permType" column="perm_type"/>
-            <result property="permUrl" column="perm_url"/>
-            <result property="permSort" column="perm_sort"/>
-            <result property="pid" column="pid"/>
-            <result property="permIcon" column="perm_icon"/>
-            <result property="status" column="status"/>
-            <result property="createTime" column="create_time"/>
-            <result property="deleted" column="deleted"/>
+        <id property="id" column="id"/>
+        <result property="permName" column="perm_name"/>
+        <result property="permCode" column="perm_code"/>
+        <result property="permType" column="perm_type"/>
+        <result property="permUrl" column="perm_url"/>
+        <result property="permSort" column="perm_sort"/>
+        <result property="pid" column="pid"/>
+        <result property="permIcon" column="perm_icon"/>
+        <result property="status" column="status"/>
+        <result property="createTime" column="create_time"/>
+        <result property="deleted" column="deleted"/>
     </resultMap>
 
     <sql id="selectiveWhere">
@@ -75,34 +75,34 @@
         UPDATE t_system_perm
         <set>
             <if test="permName != null and permName !=''  ">
-            perm_name = #{permName},
+                perm_name = #{permName},
             </if>
             <if test="permCode != null and permCode !=''  ">
-            perm_code = #{permCode},
+                perm_code = #{permCode},
             </if>
             <if test="permType != null and permType !=''  ">
-            perm_type = #{permType},
+                perm_type = #{permType},
             </if>
             <if test="permUrl != null and permUrl !=''  ">
-            perm_url = #{permUrl},
+                perm_url = #{permUrl},
             </if>
             <if test="permSort != null and permSort !=''  ">
-            perm_sort = #{permSort},
+                perm_sort = #{permSort},
             </if>
             <if test="pid != null and pid !=''  ">
-            pid = #{pid},
+                pid = #{pid},
             </if>
             <if test="permIcon != null and permIcon !=''  ">
-            perm_icon = #{permIcon},
+                perm_icon = #{permIcon},
             </if>
             <if test="status != null and status !=''  ">
-            status = #{status},
+                status = #{status},
             </if>
             <if test="createTime != null and createTime !=''  ">
-            create_time = #{createTime},
+                create_time = #{createTime},
             </if>
             <if test="deleted != null and deleted !=''  ">
-            deleted = #{deleted},
+                deleted = #{deleted},
             </if>
         </set>
         WHERE id = #{id}
@@ -120,4 +120,25 @@
         WHERE id = #{id}
     </select>
 
+    <resultMap id="permRoleMap" type="com.chq.project.management.system.model.PermissionDto">
+        <result property="permissionUrl" column="perm_url"/>
+        <collection property="roleNames" ofType="java.lang.String">
+            <result property="roleNames" column="role_code"/>
+        </collection>
+    </resultMap>
+    <select id="selectPermWithRole" resultMap="permRoleMap">
+        SELECT
+            p.perm_url,
+            r.role_code
+        FROM
+            t_system_role_perm rp
+        LEFT JOIN t_system_perm p ON rp.perm_id = p.id
+        LEFT JOIN t_system_role r ON rp.role_id = r.id
+        WHERE
+            p.perm_url IS NOT NULL
+            and  p.deleted = 0
+            and p.status = '0'
+            and r.deleted = 0
+            and r.status = '0'
+    </select>
 </mapper>
