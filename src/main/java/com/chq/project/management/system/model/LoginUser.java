@@ -25,6 +25,8 @@ public class LoginUser implements UserDetails {
 
     private Boolean remember = false;
 
+    private String token;
+
     /**
      * 角色信息
      */
@@ -131,5 +133,13 @@ public class LoginUser implements UserDetails {
 
     public void setRoles(List<String> roles) {
         this.roles = roles;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

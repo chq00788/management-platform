@@ -30,6 +30,9 @@ public class UserModel {
     @ApiModelProperty(value = "联系电话")
     private String phone;
 
+    @ApiModelProperty(value = "头像")
+    private String avatar;
+
     @ApiModelProperty(value = "状态(0:正常1:禁用)")
     private String status;
 
@@ -140,5 +143,13 @@ public class UserModel {
 
     public void setSortCode(String sortCode) {
     this.sortCode = sortCode;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 }

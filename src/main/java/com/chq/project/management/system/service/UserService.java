@@ -69,6 +69,17 @@ public class UserService {
         return userDao.getById(id);
     }
 
+
+    /**
+     * 根据用户名查询用户信息
+     *
+     * @param username
+     * @return
+     */
+    public UserModel getByUsername(String username) {
+        return userDao.getByUsername(username);
+    }
+
     /**
      * 保存用户角色信息
      *

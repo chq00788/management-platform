@@ -74,7 +74,8 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
         //将token放置请求头返回
         response.addHeader(JwtTokenUtil.TOKEN_HEADER, JwtTokenUtil.TOKEN_PREFIX + token);
         user.setPassword("");
-        ResponseUtil.write(response, Response.ok(user));
+        user.setToken(token);
+        ResponseUtil.write(response, Response.ok(JwtTokenUtil.TOKEN_PREFIX + token));
     }
 
     /**

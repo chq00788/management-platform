@@ -3,6 +3,7 @@ package com.chq.project.management.system.controller;
 import com.chq.project.management.common.entity.PageResponse;
 import com.chq.project.management.common.entity.Response;
 import com.chq.project.management.common.enums.ResponseEnum;
+import com.chq.project.management.common.utils.JwtTokenUtil;
 import com.chq.project.management.common.utils.SearchUtil;
 import com.chq.project.management.system.model.UserModel;
 import com.chq.project.management.system.service.UserService;
@@ -13,7 +14,6 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -95,5 +95,16 @@ public class UserController {
         }
         userService.saveRole(id, roleIds);
         return Response.ok("保存成功");
+    }
+
+    @ApiOperation(value = "根据ID查询信息", notes = "根据ID查询信息", httpMethod = "GET")
+    @RequestMapping(value = "/getByToken")
+    public Response<UserModel> getByToken(@RequestParam(value = "token") String token) {
+        token = token.replace(JwtTokenUtil.TOKEN_PREFIX, "");
+        String userName = JwtTokenUtil.getUserName(token);
+        UserModel model = userService.getByUsername(userName);
+        model.setPassword("");
+        model.setAvatar("https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif");
+        return Response.ok(model);
     }
 }
