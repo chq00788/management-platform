@@ -1,6 +1,7 @@
 package com.chq.project.management.system.service;
 
 
+import com.chq.project.management.common.utils.RedisUtils;
 import com.chq.project.management.system.dao.PermDao;
 import com.chq.project.management.system.model.PermissionDto;
 import com.chq.project.management.system.model.PermissionMap;
@@ -28,6 +29,9 @@ public class RbacAuthorityService {
 
     @Autowired
     private PermDao permDao;
+
+    @Autowired
+    private RedisUtils redisUtils;
 
     /**
      * 判断是否有权限
@@ -98,7 +102,6 @@ public class RbacAuthorityService {
             }).collect(Collectors.toList());
             map.put(permissionDto.getPermissionUrl(), configAttributeList);
         }
-        PermissionMap.map = map;
         return map;
     }
 
