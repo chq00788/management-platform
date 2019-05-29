@@ -14,6 +14,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -61,14 +62,17 @@ public class UserController {
 
     @ApiOperation(value = "保存信息", notes = "保存信息", httpMethod = "POST")
     @RequestMapping(value = "/save")
-    public Response<String> save(UserModel model) {
+    public Response<String> save(@RequestBody UserModel model) {
+        if (null != userService.getByUsername(model.getUsername())) {
+            return Response.fail("账号已存在");
+        }
         userService.insert(model);
         return Response.ok("保存成功");
     }
 
     @ApiOperation(value = "更新信息", notes = "更新信息", httpMethod = "POST")
     @RequestMapping(value = "/update")
-    public Response<String> update(UserModel model) {
+    public Response<String> update(@RequestBody UserModel model) {
         userService.update(model);
         return Response.ok("更新成功");
     }
@@ -97,12 +101,12 @@ public class UserController {
         return Response.ok("保存成功");
     }
 
-    @ApiOperation(value = "根据ID查询信息", notes = "根据ID查询信息", httpMethod = "GET")
+    @ApiOperation(value = "根据token查询信息", notes = "根据token查询信息", httpMethod = "GET")
     @RequestMapping(value = "/getByToken")
     public Response<UserModel> getByToken(@RequestParam(value = "token") String token) {
         token = token.replace(JwtTokenUtil.TOKEN_PREFIX, "");
         String userName = JwtTokenUtil.getUserName(token);
-        UserModel model = userService.getByUsername(userName);
+        UserModel model = userService.getInfoByUsername(userName);
         model.setPassword("");
         model.setAvatar("https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif");
         return Response.ok(model);

@@ -3,6 +3,7 @@ package com.chq.project.management.system.service;
 import com.chq.project.management.system.dao.UserDao;
 import com.chq.project.management.system.model.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,6 +40,7 @@ public class UserService {
         model.setStatus("0");
         model.setDeleted(0);
         model.setCreateTime(new Date());
+        model.setPassword(new BCryptPasswordEncoder().encode(model.getPassword()));
         userDao.insert(model);
     }
 
@@ -81,6 +83,16 @@ public class UserService {
     }
 
     /**
+     * 根据用户名查询用户信息(包含权限信息)
+     *
+     * @param username
+     * @return
+     */
+    public UserModel getInfoByUsername(String username) {
+        return userDao.getInfoByUsername(username);
+    }
+
+    /**
      * 保存用户角色信息
      *
      * @param id
@@ -101,4 +113,13 @@ public class UserService {
         userDao.saveRole(list);
     }
 
+    /**
+     * 根据用户名更新最近登录时间
+     *
+     * @param username
+     * @return
+     */
+    public Integer updateLoginTime(String username,Date lastLoginTime) {
+        return userDao.updateLoginTime(username,lastLoginTime);
+    }
 }

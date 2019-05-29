@@ -6,6 +6,7 @@ import com.chq.project.management.common.filter.JwtLoginFilter;
 import com.chq.project.management.common.handle.AuthEntryPoint;
 import com.chq.project.management.common.handle.RestAuthenticationAccessDeniedHandler;
 import com.chq.project.management.system.service.UserDetailsServiceImpl;
+import com.chq.project.management.system.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -26,15 +27,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
+    @Autowired
+    private UserService userService;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable().authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS,"/**").permitAll()
+                .antMatchers("/logout").permitAll()
                 .anyRequest().authenticated()
                 .anyRequest()
                 .access("@rbacAuthorityService.hasPermission(request,authentication)")
                 .and()
-                .addFilter(new JwtLoginFilter(authenticationManager()))
+                .addFilter(new JwtLoginFilter(authenticationManager(),userService))
                 .addFilter(new JwtAuthenticationFilter(authenticationManager()))
                 .exceptionHandling().accessDeniedHandler(new RestAuthenticationAccessDeniedHandler())
                 .authenticationEntryPoint(new AuthEntryPoint());

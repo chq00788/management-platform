@@ -3,6 +3,7 @@ package com.chq.project.management.system.dao;
 import com.chq.project.management.system.model.UserModel;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -64,6 +65,14 @@ public interface UserDao {
     UserModel getByUsername(@Param(value = "username") String username);
 
     /**
+     * 根据用户名查询用户信息
+     *
+     * @param username
+     * @return
+     */
+    UserModel getInfoByUsername(@Param(value = "username") String username);
+
+    /**
      * 保存用户角色信息
      *
      * @param list
@@ -78,4 +87,14 @@ public interface UserDao {
      * @return
      */
     Integer deleteRole(@Param(value = "userId") Integer userId);
+
+    /**
+     * 更新最后登录时间
+     *
+     * @param username
+     * @param lastLoginTime
+     * @return
+     */
+    Integer updateLoginTime(@Param(value = "username") String username, @Param(value = "lastLoginTime") Date lastLoginTime);
+
 }

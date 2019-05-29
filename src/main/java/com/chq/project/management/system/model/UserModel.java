@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
         import java.util.Date;
         import com.fasterxml.jackson.annotation.JsonFormat;
         import java.util.Date;
+import java.util.List;
 
 /**
 * 描述：用户管理实体类
@@ -33,6 +34,8 @@ public class UserModel {
     @ApiModelProperty(value = "头像")
     private String avatar;
 
+    private String introduction;
+
     @ApiModelProperty(value = "状态(0:正常1:禁用)")
     private String status;
 
@@ -46,6 +49,11 @@ public class UserModel {
 
     @ApiModelProperty(value = "是否删除(0:否1:是)")
     private Integer deleted;
+
+    /**
+     * 权限信息(菜单)
+     */
+    private List<String> roles;
 
     /**
     * 排序字段默认为id
@@ -151,5 +159,21 @@ public class UserModel {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    public List<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
+    }
+
+    public String getIntroduction() {
+        return introduction;
+    }
+
+    public void setIntroduction(String introduction) {
+        this.introduction = introduction;
     }
 }

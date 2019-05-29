@@ -7,6 +7,7 @@ import com.chq.project.management.common.utils.JwtTokenUtil;
 import com.chq.project.management.common.utils.ResponseUtil;
 import com.chq.project.management.system.model.LoginForm;
 import com.chq.project.management.system.model.LoginUser;
+import com.chq.project.management.system.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * @author CHQ
@@ -29,10 +31,13 @@ import java.util.ArrayList;
  */
 public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
 
+    private UserService userService;
+
     private AuthenticationManager authenticationManager;
 
-    public JwtLoginFilter(AuthenticationManager authenticationManager) {
+    public JwtLoginFilter(AuthenticationManager authenticationManager, UserService userService) {
         this.authenticationManager = authenticationManager;
+        this.userService = userService;
     }
 
     /**
@@ -69,7 +74,8 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         LoginUser user = (LoginUser) authResult.getPrincipal();
 
-        //此处可以更新登最近一次录时间
+        //更新最近登陆时间
+        userService.updateLoginTime(user.getUsername(), new Date());
         String token = JwtTokenUtil.createToken(user);
         //将token放置请求头返回
         response.addHeader(JwtTokenUtil.TOKEN_HEADER, JwtTokenUtil.TOKEN_PREFIX + token);
@@ -89,7 +95,8 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
      */
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
-        ResponseUtil.write(response, Response.fail(failed.getMessage()));
+
+        ResponseUtil.write(response, Response.fail("用户名或密码错误"));
     }
 
     /**
