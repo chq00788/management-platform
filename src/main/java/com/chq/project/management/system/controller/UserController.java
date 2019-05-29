@@ -45,7 +45,7 @@ public class UserController {
     @RequestMapping(value = "/getListByPage")
     public PageResponse<List<UserModel>> getListByPage(@RequestParam(value = "page", defaultValue = "1") int page,
                                                        @RequestParam(value = "limit", defaultValue = "10") int limit,
-                                                       UserModel model) {
+                                                       @RequestBody UserModel model) {
 
         PageHelper.startPage(page, limit);
         List<UserModel> list = userService.selectList(SearchUtil.getSearch(model));
