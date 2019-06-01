@@ -77,6 +77,13 @@ public class UserController {
         return Response.ok("更新成功");
     }
 
+    @ApiOperation(value = "更新用户状态信息", notes = "更新用户状态信息", httpMethod = "POST")
+    @RequestMapping(value = "/updateStatus")
+    public Response<String> updateStatus(@RequestBody UserModel model) {
+        userService.updateStatus(model);
+        return Response.ok("更新成功");
+    }
+
     @ApiOperation(value = "删除信息", notes = "删除信息", httpMethod = "GET")
     @RequestMapping(value = "/delete")
     public Response<String> delete(@RequestParam(value = "id") Integer id) {

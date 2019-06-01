@@ -50,7 +50,21 @@ public class UserService {
      * @param model
      */
     public void update(UserModel model) {
-        userDao.update(model);
+        UserModel old = this.getById(model.getId());
+        old.setRealName(model.getRealName());
+        old.setPhone(model.getPhone());
+        userDao.update(old);
+    }
+
+    /**
+     * 更新数据
+     *
+     * @param model
+     */
+    public void updateStatus(UserModel model) {
+        UserModel old = this.getById(model.getId());
+        old.setStatus(model.getStatus());
+        userDao.update(old);
     }
 
     /**
@@ -59,7 +73,9 @@ public class UserService {
      * @param id
      */
     public void delete(Integer id) {
-        userDao.delete(id);
+        UserModel old = this.getById(id);
+        old.setDeleted(1);
+        userDao.update(old);
     }
 
     /**

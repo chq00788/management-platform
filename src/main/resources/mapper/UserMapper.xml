@@ -34,6 +34,12 @@
             <if test="realName != null and realName !=''  ">
                 and real_name like CONCAT('%',#{realName},'%' )
             </if>
+            <if test="status != null and status !=''  ">
+                and status = #{status}
+            </if>
+            <if test="1==1">
+                and deleted = 0
+            </if>
         </where>
     </sql>
 
@@ -83,16 +89,16 @@
             <if test="phone != null and phone !=''  ">
                 phone = #{phone},
             </if>
-            <if test="status != null and status !=''  ">
+            <if test="status != null">
                 status = #{status},
             </if>
-            <if test="createTime != null and createTime !=''  ">
+            <if test="createTime != null">
                 create_time = #{createTime},
             </if>
-            <if test="lastLoginTime != null and lastLoginTime !=''  ">
+            <if test="lastLoginTime != null">
                 last_login_time = #{lastLoginTime},
             </if>
-            <if test="deleted != null and deleted !=''  ">
+            <if test="deleted != null">
                 deleted = #{deleted},
             </if>
         </set>
