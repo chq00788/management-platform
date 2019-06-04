@@ -79,4 +79,12 @@ public interface RoleDao {
      * @return
      */
     Integer deletePerm(@Param(value = "roleId") Integer roleId);
+
+    /**
+     * 根据用户查询角色信息
+     *
+     * @param userId
+     * @return
+     */
+    List<RoleModel> selectListByUserId(@Param(value = "userId") Integer userId);
 }

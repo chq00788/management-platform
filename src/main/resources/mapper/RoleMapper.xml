@@ -20,11 +20,14 @@
         <result property="description" column="description"/>
         <result property="createTime" column="create_time"/>
         <result property="deleted" column="deleted"/>
+        <result property="checked" column="checked"/>
     </resultMap>
 
     <sql id="selectiveWhere">
         <where>
-
+          <if test="1==1">
+              and deleted = 0
+          </if>
         </where>
     </sql>
 
@@ -116,4 +119,23 @@
     <delete id="deletePerm" parameterType="integer">
         delete from t_system_role_perm where role_id = #{roleId}
     </delete>
+
+    <select id="selectListByUserId" resultMap="baseResultMap">
+        SELECT
+            r.*, (
+                CASE
+                WHEN u.user_id IS NULL THEN
+                    0
+                ELSE
+                    1
+                END
+            ) checked
+        FROM
+            t_system_role r
+        LEFT JOIN t_system_user_role u ON r.id = u.role_id
+        AND u.user_id = #{userId}
+        WHERE
+            r.deleted = 0
+        AND r.`status` = 0
+    </select>
 </mapper>

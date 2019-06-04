@@ -89,4 +89,14 @@ public class RoleService {
         }
         roleDao.savePerm(list);
     }
+
+    /**
+     * 根据用户查询角色信息
+     *
+     * @param userId
+     * @return
+     */
+    public List<RoleModel> selectListByUserId(Integer userId) {
+        return roleDao.selectListByUserId(userId);
+    }
 }

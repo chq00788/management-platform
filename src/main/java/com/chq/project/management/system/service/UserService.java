@@ -130,6 +130,16 @@ public class UserService {
     }
 
     /**
+     * 获取用户角色信息
+     *
+     * @param userId
+     * @return
+     */
+    public List<Integer> getUserRole(Integer userId){
+        return userDao.getUserRole(userId);
+    }
+
+    /**
      * 根据用户名更新最近登录时间
      *
      * @param username

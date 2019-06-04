@@ -108,6 +108,16 @@ public class UserController {
         return Response.ok("保存成功");
     }
 
+    @ApiOperation(value = "查询用户角色信息", notes = "查询用户角色信息", httpMethod = "GET")
+    @RequestMapping(value = "/getRole")
+    public Response<List<Integer>> getRole(@RequestParam Integer id) {
+        if (null == id) {
+            return Response.fail(ResponseEnum.BAD_REQUEST);
+        }
+        List<Integer> roles = userService.getUserRole(id);
+        return Response.ok(roles);
+    }
+
     @ApiOperation(value = "根据token查询信息", notes = "根据token查询信息", httpMethod = "GET")
     @RequestMapping(value = "/getByToken")
     public Response<UserModel> getByToken(@RequestParam(value = "token") String token) {

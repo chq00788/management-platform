@@ -81,6 +81,14 @@ public interface UserDao {
     Integer saveRole(List list);
 
     /**
+     * 获取用户角色信息
+     *
+     * @param userId
+     * @return
+     */
+    List<Integer> getUserRole(@Param(value = "userId") Integer userId);
+
+    /**
      * 删除用户角色信息
      *
      * @param userId

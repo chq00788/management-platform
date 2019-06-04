@@ -95,4 +95,14 @@ public class RoleController {
         roleService.savePerm(id, permIds);
         return Response.ok("保存成功");
     }
+
+    @ApiOperation(value = "根据用户查询角色信息", notes = "根据用户查询角色信息", httpMethod = "GET")
+    @RequestMapping(value = "/getListByUserId")
+    public Response<List<RoleModel>> getListByUserId(@RequestParam Integer id) {
+        if (null == id) {
+            return Response.fail(ResponseEnum.BAD_REQUEST);
+        }
+        List<RoleModel> list = roleService.selectListByUserId(id);
+        return Response.ok(list);
+    }
 }

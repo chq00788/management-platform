@@ -35,6 +35,8 @@ public class RoleModel {
     @ApiModelProperty(value = "是否删除(0:否1:是)")
     private Integer deleted;
 
+    @ApiModelProperty(value = "是否选中(0:否1:是)")
+    private Integer checked;
     /**
     * 排序字段默认为id
     */
@@ -115,5 +117,13 @@ public class RoleModel {
 
     public void setSortCode(String sortCode) {
     this.sortCode = sortCode;
+    }
+
+    public Integer getChecked() {
+        return checked;
+    }
+
+    public void setChecked(Integer checked) {
+        this.checked = checked;
     }
 }
