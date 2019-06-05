@@ -36,12 +36,12 @@ public class JwtTokenUtil {
     /**
      * 过期时间
      */
-    private static final Long EXPIRATION = 3600L;
+    public static final Long EXPIRATION = 3600L;
 
     /**
      * 选择记住后过期时间
      */
-    private static final Long REMEMBER_EXPIRATION = 604800L;
+    public static final Long REMEMBER_EXPIRATION = 604800L;
 
     /**
      * 生成token

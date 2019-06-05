@@ -98,13 +98,13 @@ public class UserController {
         return Response.ok(model);
     }
 
-    @ApiOperation(value = "保存用户角色信息", notes = "保存用户角色信息", httpMethod = "GET")
+    @ApiOperation(value = "保存用户角色信息", notes = "保存用户角色信息", httpMethod = "POST")
     @RequestMapping(value = "/saveRole")
-    public Response<String> saveRole(@RequestParam Integer id, @RequestParam(value = "roleIds[]") Integer[] roleIds) {
-        if (null == id || null == roleIds) {
+    public Response<String> saveRole(@RequestBody UserModel model) {
+        if (null == model.getId() || null == model.getRoleIds()) {
             return Response.fail(ResponseEnum.BAD_REQUEST);
         }
-        userService.saveRole(id, roleIds);
+        userService.saveRole(model.getId(), model.getRoleIds());
         return Response.ok("保存成功");
     }
 

@@ -56,6 +56,11 @@ public class UserModel {
     private List<String> roles;
 
     /**
+     * 用户角色ID数组
+     */
+    private Integer[] roleIds;
+
+    /**
     * 排序字段默认为id
     */
     private String sortCode = "id";
@@ -175,5 +180,13 @@ public class UserModel {
 
     public void setIntroduction(String introduction) {
         this.introduction = introduction;
+    }
+
+    public Integer[] getRoleIds() {
+        return roleIds;
+    }
+
+    public void setRoleIds(Integer[] roleIds) {
+        this.roleIds = roleIds;
     }
 }
