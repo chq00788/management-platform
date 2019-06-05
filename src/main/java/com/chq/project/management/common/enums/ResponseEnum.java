@@ -37,7 +37,13 @@ public enum ResponseEnum {
     /**
      * 服务器错误
      */
-    INTERNAL_SERVER_ERROR(500, "请求异常,请稍后再试");
+    INTERNAL_SERVER_ERROR(500, "请求异常,请稍后再试"),
+
+
+    /**
+     * token过期异常
+     */
+    JWT_TOKEN_EXPIRED(1001, "登录过期,请重新登录");
 
 
     private Integer code;
