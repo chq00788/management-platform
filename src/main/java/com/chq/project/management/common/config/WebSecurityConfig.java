@@ -5,6 +5,8 @@ import com.chq.project.management.common.filter.JwtAuthenticationFilter;
 import com.chq.project.management.common.filter.JwtLoginFilter;
 import com.chq.project.management.common.handle.AuthEntryPoint;
 import com.chq.project.management.common.handle.RestAuthenticationAccessDeniedHandler;
+import com.chq.project.management.common.utils.RedisUtils;
+import com.chq.project.management.system.dao.RoleDao;
 import com.chq.project.management.system.service.UserDetailsServiceImpl;
 import com.chq.project.management.system.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private RedisUtils redisUtils;
+
+    @Autowired
+    private RoleDao roleDao;
+
+
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable().authorizeRequests()
@@ -40,7 +50,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .access("@rbacAuthorityService.hasPermission(request,authentication)")
                 .and()
                 .addFilter(new JwtLoginFilter(authenticationManager(),userService))
-                .addFilter(new JwtAuthenticationFilter(authenticationManager()))
+                .addFilter(new JwtAuthenticationFilter(authenticationManager(),roleDao,redisUtils))
                 .exceptionHandling().accessDeniedHandler(new RestAuthenticationAccessDeniedHandler())
                 .authenticationEntryPoint(new AuthEntryPoint());
     }

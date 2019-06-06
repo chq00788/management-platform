@@ -2,11 +2,15 @@ package com.chq.project.management.common.exception;
 
 import com.chq.project.management.common.entity.Response;
 import com.chq.project.management.common.enums.ResponseEnum;
+import com.chq.project.management.common.utils.JwtTokenUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.NoHandlerFoundException;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author CHQ
@@ -18,6 +22,7 @@ public class ExceptionHandle {
 
     /**
      * 404
+     *
      * @param e
      * @return
      */
@@ -36,7 +41,11 @@ public class ExceptionHandle {
      */
     @ExceptionHandler(value = ExpiredJwtException.class)
     @ResponseBody
-    public Response expiredJwtHandler(Exception e) {
+    public Response expiredJwtHandler(HttpServletRequest request, HttpServletResponse response, Exception e) {
+        String header = request.getHeader(JwtTokenUtil.TOKEN_HEADER);
+        String token = header.replace(JwtTokenUtil.TOKEN_PREFIX, "");
+        String username = response.getHeader("username");
+        System.out.println(username);
         e.printStackTrace();
         return Response.fail(ResponseEnum.JWT_TOKEN_EXPIRED);
     }
