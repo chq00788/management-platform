@@ -48,7 +48,22 @@ public class RoleService {
      * @param model
      */
     public void update(RoleModel model) {
-        roleDao.update(model);
+        RoleModel role = this.getById(model.getId());
+        role.setRoleName(model.getRoleName());
+        role.setRoleCode(model.getRoleCode());
+        role.setDescription(model.getDescription());
+        roleDao.update(role);
+    }
+
+    /**
+     * 更新状态数据
+     *
+     * @param model
+     */
+    public void updateStatus(RoleModel model) {
+        RoleModel role = this.getById(model.getId());
+        role.setStatus(model.getStatus());
+        roleDao.update(role);
     }
 
     /**
@@ -57,7 +72,9 @@ public class RoleService {
      * @param id
      */
     public void delete(Integer id) {
-        roleDao.delete(id);
+        RoleModel role = this.getById(id);
+        role.setDeleted(1);
+        roleDao.update(role);
     }
 
     /**

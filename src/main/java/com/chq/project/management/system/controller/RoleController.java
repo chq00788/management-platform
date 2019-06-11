@@ -13,6 +13,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,7 +44,7 @@ public class RoleController {
     @RequestMapping(value = "/getListByPage")
     public PageResponse<List<RoleModel>> getListByPage(@RequestParam(value = "page", defaultValue = "1") int page,
                                                        @RequestParam(value = "limit", defaultValue = "10") int limit,
-                                                       RoleModel model) {
+                                                       @RequestBody RoleModel model) {
 
         PageHelper.startPage(page, limit);
         List<RoleModel> list = roleService.selectList(SearchUtil.getSearch(model));
@@ -60,15 +61,22 @@ public class RoleController {
 
     @ApiOperation(value = "保存信息", notes = "保存信息", httpMethod = "POST")
     @RequestMapping(value = "/save")
-    public Response<String> save(RoleModel model) {
+    public Response<String> save(@RequestBody RoleModel model) {
         roleService.insert(model);
         return Response.ok("保存成功");
     }
 
     @ApiOperation(value = "更新信息", notes = "更新信息", httpMethod = "POST")
     @RequestMapping(value = "/update")
-    public Response<String> update(RoleModel model) {
+    public Response<String> update(@RequestBody RoleModel model) {
         roleService.update(model);
+        return Response.ok("更新成功");
+    }
+
+    @ApiOperation(value = "更新角色状态信息", notes = "更新角色状态信息", httpMethod = "POST")
+    @RequestMapping(value = "/updateStatus")
+    public Response<String> updateStatus(@RequestBody RoleModel model) {
+        roleService.updateStatus(model);
         return Response.ok("更新成功");
     }
 

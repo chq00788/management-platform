@@ -73,10 +73,10 @@
             <if test="description != null and description !=''  ">
                 description = #{description},
             </if>
-            <if test="createTime != null and createTime !=''  ">
+            <if test="createTime != null">
                 create_time = #{createTime},
             </if>
-            <if test="deleted != null and deleted !=''  ">
+            <if test="deleted != null">
                 deleted = #{deleted},
             </if>
         </set>
