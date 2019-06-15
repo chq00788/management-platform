@@ -3,7 +3,10 @@ package com.chq.project.management.system.model;
 import io.swagger.annotations.ApiModelProperty;
 
         import com.fasterxml.jackson.annotation.JsonFormat;
-        import java.util.Date;
+import org.apache.catalina.LifecycleState;
+
+import java.util.Date;
+import java.util.List;
 
 /**
 * 描述：权限管理实体类
@@ -46,6 +49,9 @@ public class PermModel {
 
     @ApiModelProperty(value = "是否删除(0:否1:是)")
     private Integer deleted;
+
+    @ApiModelProperty(value = "下级")
+    private List<PermModel> children;
 
     /**
     * 排序字段默认为id
@@ -159,5 +165,13 @@ public class PermModel {
 
     public void setSortCode(String sortCode) {
     this.sortCode = sortCode;
+    }
+
+    public List<PermModel> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<PermModel> children) {
+        this.children = children;
     }
 }

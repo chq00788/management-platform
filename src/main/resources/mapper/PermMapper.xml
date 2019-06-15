@@ -32,7 +32,12 @@
 
     <sql id="selectiveWhere">
         <where>
-
+            <if test="1==1">
+                and deleted = 0
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
         </where>
     </sql>
 

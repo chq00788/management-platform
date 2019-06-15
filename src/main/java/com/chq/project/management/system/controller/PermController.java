@@ -57,6 +57,13 @@ public class PermController {
         return Response.ok(list);
     }
 
+    @ApiOperation(value = "查询树形列表", notes = "查询树形列表", httpMethod = "GET")
+    @RequestMapping(value = "/getTreeList")
+    public Response<List<PermModel>> getTreeList() {
+        List<PermModel> list = permService.getPermTree();
+        return Response.ok(list);
+    }
+
     @ApiOperation(value = "保存信息", notes = "保存信息", httpMethod = "POST")
     @RequestMapping(value = "/save")
     public Response<String> save(PermModel model) {

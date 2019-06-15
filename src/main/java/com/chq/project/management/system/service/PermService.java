@@ -1,13 +1,12 @@
 package com.chq.project.management.system.service;
 
+import com.chq.project.management.common.utils.SearchUtil;
 import com.chq.project.management.system.dao.PermDao;
 import com.chq.project.management.system.model.PermModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 描述：权限管理 服务实现层
@@ -28,6 +27,19 @@ public class PermService {
      */
     public List<PermModel> selectList(Map<String, Object> searchMap) {
         return permDao.selectList(searchMap);
+    }
+
+    /**
+     * 获取树形权限列表
+     *
+     * @return
+     */
+    public List<PermModel> getPermTree() {
+        PermModel model = new PermModel();
+        model.setStatus("0");
+        Map<String, Object> searchMap = SearchUtil.getSearch(model);
+        List<PermModel> list = permDao.selectList(searchMap);
+        return formatPermTree(list, 0);
     }
 
 
@@ -68,5 +80,16 @@ public class PermService {
      */
     public PermModel getById(Integer id) {
         return permDao.getById(id);
+    }
+
+    private List<PermModel> formatPermTree(List<PermModel> list, int pid) {
+        List<PermModel> tree = new ArrayList<>();
+        for (PermModel perm : list) {
+            if (perm.getPid() == pid) {
+                perm.setChildren(formatPermTree(list, perm.getId()));
+                tree.add(perm);
+            }
+        }
+        return tree;
     }
 }
