@@ -25,9 +25,9 @@
 
     <sql id="selectiveWhere">
         <where>
-          <if test="1==1">
-              and deleted = 0
-          </if>
+            <if test="1==1">
+                and deleted = 0
+            </if>
         </where>
     </sql>
 
@@ -116,6 +116,14 @@
             )
         </foreach>
     </insert>
+
+    <select id="getPermsByRoleId" resultType="java.lang.Integer">
+        select
+        perm_id
+        from
+        t_system_role_perm
+        where role_id = #{roleId}
+    </select>
     <delete id="deletePerm" parameterType="integer">
         delete from t_system_role_perm where role_id = #{roleId}
     </delete>

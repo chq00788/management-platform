@@ -87,4 +87,12 @@ public interface RoleDao {
      * @return
      */
     List<RoleModel> selectListByUserId(@Param(value = "userId") Integer userId);
+
+    /**
+     * 查询角色权限信息
+     *
+     * @param roleId
+     * @return
+     */
+    List<Integer> getPermsByRoleId(@Param(value = "roleId") Integer roleId);
 }

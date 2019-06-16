@@ -116,4 +116,14 @@ public class RoleService {
     public List<RoleModel> selectListByUserId(Integer userId) {
         return roleDao.selectListByUserId(userId);
     }
+
+    /**
+     * 查询角色权限信息
+     *
+     * @param roleId
+     * @return
+     */
+    public List<Integer> getPermsByRoleId(Integer roleId){
+        return roleDao.getPermsByRoleId(roleId);
+    }
 }

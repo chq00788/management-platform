@@ -104,6 +104,13 @@ public class RoleController {
         return Response.ok("保存成功");
     }
 
+    @ApiOperation(value = "根据ID查询权限信息", notes = "根据ID查询权限信息", httpMethod = "GET")
+    @RequestMapping(value = "/getPerm")
+    public Response<List<Integer>> getPerm(@RequestParam(value = "id") Integer id) {
+        List<Integer> perms = roleService.getPermsByRoleId(id);
+        return Response.ok(perms);
+    }
+
     @ApiOperation(value = "根据用户查询角色信息", notes = "根据用户查询角色信息", httpMethod = "GET")
     @RequestMapping(value = "/getListByUserId")
     public Response<List<RoleModel>> getListByUserId(@RequestParam Integer id) {
