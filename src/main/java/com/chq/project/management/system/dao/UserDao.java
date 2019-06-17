@@ -65,14 +65,6 @@ public interface UserDao {
     UserModel getByUsername(@Param(value = "username") String username);
 
     /**
-     * 根据用户名查询用户信息
-     *
-     * @param username
-     * @return
-     */
-    UserModel getInfoByUsername(@Param(value = "username") String username);
-
-    /**
      * 保存用户角色信息
      *
      * @param list

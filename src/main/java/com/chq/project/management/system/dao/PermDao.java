@@ -2,6 +2,7 @@ package com.chq.project.management.system.dao;
 
 import com.chq.project.management.system.model.PermModel;
 import com.chq.project.management.system.model.PermissionDto;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -61,4 +62,12 @@ public interface PermDao {
      * @return
      */
     List<PermissionDto> selectPermWithRole();
+
+    /**
+     * 根据用户名查询用户权限信息
+     *
+     * @param username
+     * @return
+     */
+    List<PermModel> selectListByUsername(@Param(value = "username") String username);
 }

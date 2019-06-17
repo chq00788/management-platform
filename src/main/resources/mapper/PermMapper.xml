@@ -146,4 +146,28 @@
             and r.deleted = 0
             and r.status = '0'
     </select>
+
+    <select id="selectListByUsername" resultMap="baseResultMap">
+        SELECT
+            p.id,
+            p.perm_name,
+            p.perm_code,
+            p.perm_type,
+            p.perm_url,
+            p.perm_sort,
+            p.pid,
+            p.perm_icon,
+            p. STATUS,
+            p.create_time,
+            p.deleted
+        FROM
+            t_system_perm p
+        LEFT JOIN t_system_role_perm rp ON p.id = rp.perm_id
+        LEFT JOIN t_system_user_role ur ON ur.role_id = rp.role_id
+        LEFT JOIN t_system_user u ON u.id = ur.user_id
+        WHERE
+            u.username = #{username}
+        AND p.perm_type IN (1, 2)
+        and p.deleted = 0 and p.status = '0'
+    </select>
 </mapper>

@@ -142,43 +142,6 @@
         delete from t_system_user_role where user_id = #{userId}
     </delete>
 
-
-    <resultMap id="infoResultMap" type="com.chq.project.management.system.model.UserModel">
-        <id property="id" column="id"/>
-        <result property="username" column="username"/>
-        <result property="password" column="password"/>
-        <result property="realName" column="real_name"/>
-        <result property="phone" column="phone"/>
-        <result property="status" column="status"/>
-        <result property="createTime" column="create_time"/>
-        <result property="lastLoginTime" column="last_login_time"/>
-        <result property="deleted" column="deleted"/>
-        <collection property="roles" ofType="java.lang.String">
-            <result property="roles" column="perm_code"/>
-        </collection>
-    </resultMap>
-    <select id="getInfoByUsername" resultMap="infoResultMap">
-        SELECT DISTINCT
-            u.id,
-            u.username,
-            u.real_name,
-            u.phone,
-            u. STATUS,
-            u.create_time,
-            u.last_login_time,
-            u.deleted,
-            p.perm_code
-        FROM
-            t_system_user u
-        LEFT JOIN t_system_user_role ur ON u.id = ur.user_id
-        LEFT JOIN t_system_role_perm rp ON ur.role_id = rp.role_id
-        LEFT JOIN t_system_perm p ON rp.perm_id = p.id
-        WHERE
-            u.username = #{username}
-            and p.deleted = 0
-            and p.status = '0'
-    </select>
-
     <update id="updateLoginTime">
         UPDATE t_system_user
         set last_login_time = #{lastLoginTime}

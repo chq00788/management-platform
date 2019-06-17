@@ -37,6 +37,9 @@ public class RoleModel {
 
     @ApiModelProperty(value = "是否选中(0:否1:是)")
     private Integer checked;
+
+    @ApiModelProperty(value = "角色权限ID信息")
+    private Integer[] permIds;
     /**
     * 排序字段默认为id
     */
@@ -125,5 +128,13 @@ public class RoleModel {
 
     public void setChecked(Integer checked) {
         this.checked = checked;
+    }
+
+    public Integer[] getPermIds() {
+        return permIds;
+    }
+
+    public void setPermIds(Integer[] permIds) {
+        this.permIds = permIds;
     }
 }

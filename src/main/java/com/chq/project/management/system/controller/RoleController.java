@@ -96,11 +96,11 @@ public class RoleController {
 
     @ApiOperation(value = "保存角色权限信息", notes = "保存角色权限信息", httpMethod = "GET")
     @RequestMapping(value = "/savePerm")
-    public Response<String> savePerm(@RequestParam Integer id, @RequestParam(value = "permIds[]") Integer[] permIds) {
-        if (null == id || null == permIds) {
+    public Response<String> savePerm(@RequestBody RoleModel model) {
+        if (null == model.getId() || null == model.getPermIds()) {
             return Response.fail(ResponseEnum.BAD_REQUEST);
         }
-        roleService.savePerm(id, permIds);
+        roleService.savePerm(model.getId(), model.getPermIds());
         return Response.ok("保存成功");
     }
 

@@ -1,6 +1,8 @@
 package com.chq.project.management.system.service;
 
+import com.chq.project.management.system.dao.PermDao;
 import com.chq.project.management.system.dao.UserDao;
+import com.chq.project.management.system.model.PermModel;
 import com.chq.project.management.system.model.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -20,6 +22,10 @@ public class UserService {
 
     @Autowired
     private UserDao userDao;
+
+
+    @Autowired
+    private PermDao permDao;
 
     /**
      * 查询数据
@@ -105,7 +111,9 @@ public class UserService {
      * @return
      */
     public UserModel getInfoByUsername(String username) {
-        return userDao.getInfoByUsername(username);
+        UserModel user = userDao.getByUsername(username);
+        user.setRoles(getUserPermIds(username));
+        return user;
     }
 
     /**
@@ -135,7 +143,7 @@ public class UserService {
      * @param userId
      * @return
      */
-    public List<Integer> getUserRole(Integer userId){
+    public List<Integer> getUserRole(Integer userId) {
         return userDao.getUserRole(userId);
     }
 
@@ -145,7 +153,30 @@ public class UserService {
      * @param username
      * @return
      */
-    public Integer updateLoginTime(String username,Date lastLoginTime) {
-        return userDao.updateLoginTime(username,lastLoginTime);
+    public Integer updateLoginTime(String username, Date lastLoginTime) {
+        return userDao.updateLoginTime(username, lastLoginTime);
+    }
+
+    private List<String> getUserPermIds(String username) {
+        List<String> ids = new ArrayList<>();
+        List<PermModel> perms = permDao.selectListByUsername(username);
+        for (PermModel model : perms) {
+            if (Integer.valueOf(2).equals(model.getPermType())) {
+                //菜单
+                ids.add(model.getPermCode());
+                boolean contains = false;
+                for (PermModel perm : perms) {
+                    if (model.getPid().equals(perm.getId())) {
+                        ids.add(perm.getPermCode());
+                        contains = true;
+                    }
+                }
+                if (!contains) {
+                    PermModel perm = permDao.getById(model.getPid());
+                    ids.add(perm.getPermCode());
+                }
+            }
+        }
+        return ids;
     }
 }
