@@ -26,7 +26,8 @@ public class PermService {
      * @return
      */
     public List<PermModel> selectList(Map<String, Object> searchMap) {
-        return permDao.selectList(searchMap);
+        List<PermModel> list = permDao.selectList(searchMap);
+        return formatPermTree(list, 0);
     }
 
     /**

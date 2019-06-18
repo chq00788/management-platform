@@ -41,7 +41,7 @@ public class PermController {
     })
     @RequestMapping(value = "/getListByPage")
     public PageResponse<List<PermModel>> getListByPage(@RequestParam(value = "page", defaultValue = "1") int page,
-                                                       @RequestParam(value = "limit", defaultValue = "10") int limit,
+                                                       @RequestParam(value = "limit", defaultValue = "10000") int limit,
                                                        PermModel model) {
 
         PageHelper.startPage(page, limit);
@@ -53,6 +53,8 @@ public class PermController {
     @ApiOperation(value = "查询信息列表", notes = "查询信息列表", httpMethod = "GET")
     @RequestMapping(value = "/getList")
     public Response<List<PermModel>> getList(PermModel model) {
+        model.setSortCode("perm_sort");
+        model.setSortRole("ASC");
         List<PermModel> list = permService.selectList(SearchUtil.getSearch(model));
         return Response.ok(list);
     }

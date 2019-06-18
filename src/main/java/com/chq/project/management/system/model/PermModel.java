@@ -53,6 +53,9 @@ public class PermModel {
     @ApiModelProperty(value = "下级")
     private List<PermModel> children;
 
+    @ApiModelProperty(value = "是否有下级")
+    private boolean hasChildren = true;
+
     /**
     * 排序字段默认为id
     */
@@ -173,5 +176,13 @@ public class PermModel {
 
     public void setChildren(List<PermModel> children) {
         this.children = children;
+    }
+
+    public boolean isHasChildren() {
+        return hasChildren;
+    }
+
+    public void setHasChildren(boolean hasChildren) {
+        this.hasChildren = hasChildren;
     }
 }
