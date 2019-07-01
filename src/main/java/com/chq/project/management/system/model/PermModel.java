@@ -37,6 +37,9 @@ public class PermModel {
     @ApiModelProperty(value = "父ID")
     private Integer pid;
 
+    @ApiModelProperty(value = "父名称")
+    private String pName;
+
     @ApiModelProperty(value = "图标")
     private String permIcon;
 
@@ -184,5 +187,13 @@ public class PermModel {
 
     public void setHasChildren(boolean hasChildren) {
         this.hasChildren = hasChildren;
+    }
+
+    public String getpName() {
+        return pName;
+    }
+
+    public void setpName(String pName) {
+        this.pName = pName;
     }
 }

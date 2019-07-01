@@ -6,7 +6,10 @@ import com.chq.project.management.system.model.PermModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 描述：权限管理 服务实现层
@@ -25,9 +28,18 @@ public class PermService {
      *
      * @return
      */
-    public List<PermModel> selectList(Map<String, Object> searchMap) {
+    public List<PermModel> selectListForTable(Map<String, Object> searchMap) {
         List<PermModel> list = permDao.selectList(searchMap);
         return formatPermTree(list, 0);
+    }
+
+    /**
+     *
+     * @param searchMap
+     * @return
+     */
+    public List<PermModel> selectList(Map<String, Object> searchMap) {
+        return permDao.selectList(searchMap);
     }
 
     /**
@@ -62,7 +74,12 @@ public class PermService {
      * @param model
      */
     public void update(PermModel model) {
-        permDao.update(model);
+        PermModel perm = this.getById(model.getId());
+        perm.setPermName(model.getPermName());
+        perm.setPermCode(model.getPermCode());
+        perm.setPermIcon(model.getPermIcon());
+        perm.setPermUrl(model.getPermUrl());
+        permDao.update(perm);
     }
 
     /**
@@ -71,7 +88,9 @@ public class PermService {
      * @param id
      */
     public void delete(Integer id) {
-        permDao.delete(id);
+        PermModel perm = this.getById(id);
+        perm.setDeleted(1);
+        permDao.update(perm);
     }
 
     /**

@@ -12,11 +12,15 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -45,7 +49,7 @@ public class PermController {
                                                        PermModel model) {
 
         PageHelper.startPage(page, limit);
-        List<PermModel> list = permService.selectList(SearchUtil.getSearch(model));
+        List<PermModel> list = permService.selectListForTable(SearchUtil.getSearch(model));
         PageInfo<PermModel> pageInfo = new PageInfo<>(list);
         return PageResponse.ok(pageInfo);
     }
@@ -55,7 +59,7 @@ public class PermController {
     public Response<List<PermModel>> getList(PermModel model) {
         model.setSortCode("perm_sort");
         model.setSortRole("ASC");
-        List<PermModel> list = permService.selectList(SearchUtil.getSearch(model));
+        List<PermModel> list = permService.selectListForTable(SearchUtil.getSearch(model));
         return Response.ok(list);
     }
 
@@ -68,14 +72,14 @@ public class PermController {
 
     @ApiOperation(value = "保存信息", notes = "保存信息", httpMethod = "POST")
     @RequestMapping(value = "/save")
-    public Response<String> save(PermModel model) {
+    public Response<String> save(@RequestBody PermModel model) {
         permService.insert(model);
         return Response.ok("保存成功");
     }
 
     @ApiOperation(value = "更新信息", notes = "更新信息", httpMethod = "POST")
     @RequestMapping(value = "/update")
-    public Response<String> update(PermModel model) {
+    public Response<String> update(@RequestBody PermModel model) {
         permService.update(model);
         return Response.ok("更新成功");
     }
@@ -83,8 +87,15 @@ public class PermController {
     @ApiOperation(value = "删除信息", notes = "删除信息", httpMethod = "GET")
     @RequestMapping(value = "/delete")
     public Response<String> delete(@RequestParam(value = "id") Integer id) {
-        permService.delete(id);
-        return Response.ok("删除成功");
+        PermModel model = new PermModel();
+        model.setPid(id);
+        List<PermModel> list = permService.selectList(SearchUtil.getSearch(model));
+        if (CollectionUtils.isEmpty(list)){
+            permService.delete(id);
+            return Response.ok("删除成功");
+        }else {
+            return Response.fail("子级不为空,不能删除");
+        }
     }
 
     @ApiOperation(value = "根据ID查询信息", notes = "根据ID查询信息", httpMethod = "GET")

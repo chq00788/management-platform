@@ -24,6 +24,7 @@
         <result property="permUrl" column="perm_url"/>
         <result property="permSort" column="perm_sort"/>
         <result property="pid" column="pid"/>
+        <result property="pName" column="p_name"/>
         <result property="permIcon" column="perm_icon"/>
         <result property="status" column="status"/>
         <result property="createTime" column="create_time"/>
@@ -38,15 +39,41 @@
             <if test="status != null">
                 and status = #{status}
             </if>
+            <if test="pid != null">
+                and pid = #{pid}
+            </if>
         </where>
     </sql>
 
 
     <select id="selectList" resultMap="baseResultMap">
         SELECT
-        <include refid="baseColumn"/>
-        FROM t_system_perm
-        <include refid="selectiveWhere"/>
+        b.id,
+        b.perm_name,
+        b.perm_code,
+        b.perm_type,
+        b.perm_url,
+        b.perm_sort,
+        b.pid,
+        d.perm_name AS p_name,
+        b.perm_icon,
+        b. STATUS,
+        b.create_time,
+        b.deleted
+        FROM
+        t_system_perm b
+        LEFT JOIN t_system_perm d ON d.id = b.pid
+        <where>
+            <if test="1==1">
+                and b.deleted = 0
+            </if>
+            <if test="status != null">
+                and b.status = #{status}
+            </if>
+            <if test="pid != null">
+                and b.pid = #{pid}
+            </if>
+        </where>
         ORDER BY ${sortCode} ${sortRole}
     </select>
 
@@ -91,10 +118,10 @@
             <if test="permUrl != null and permUrl !=''  ">
                 perm_url = #{permUrl},
             </if>
-            <if test="permSort != null and permSort !=''  ">
+            <if test="permSort != null">
                 perm_sort = #{permSort},
             </if>
-            <if test="pid != null and pid !=''  ">
+            <if test="pid != null">
                 pid = #{pid},
             </if>
             <if test="permIcon != null and permIcon !=''  ">
@@ -103,10 +130,10 @@
             <if test="status != null and status !=''  ">
                 status = #{status},
             </if>
-            <if test="createTime != null and createTime !=''  ">
+            <if test="createTime != null">
                 create_time = #{createTime},
             </if>
-            <if test="deleted != null and deleted !=''  ">
+            <if test="deleted != null">
                 deleted = #{deleted},
             </if>
         </set>
